@@ -1,5 +1,7 @@
 import numpy as np
 import scipy.sparse as sp
+import matplotlib.pylab as plt
+
 from fda.utils.validation import check_array
 
 
@@ -178,8 +180,8 @@ class bspline_basis(basis):
         nd = nderiv + 1  # ND is order of derivative plus one
         ns = nb - 2 + k  # number splines to compute
         if ns < 1:
-            bsplinemat = None
-            self.basismat = bsplinemat
+            # bsplinemat = None
+            # return bsplinemat
             raise ValueError('There are no B-splines for the given input.')
 
         onenx = np.ones((1, nx))
@@ -276,7 +278,58 @@ class bspline_basis(basis):
         if sparsewrd:
             bsplinemat = sp.coo_matrix(bsplinemat)
 
-        self.evalargs = evalargs
-        self.basismat = bsplinemat
+        return bsplinemat
 
-    #def eval(self, evalargs, nderiv=0, sparsewrd=0):
+
+    def eval(self, evalargs, nderiv=0, sparsewrd=0):
+
+
+
+    def plot(self, nx=None):
+        """
+        :param nx: Number of plotpoints
+        :return: matplotlib figure
+        """
+
+        # get parameter values and set defaults
+        nbasis = self.nbasis
+        rangex = self.rangeval.ravel()
+        if nx is None:
+            nx = max(10*nbasis+1,501)
+
+        # evaluate basis at fine mesh
+
+        x = np.linspace(rangex[0], rangex[1], nx)
+
+
+
+class constant_basis(basis):
+    """Creates a basis object of type constant."""
+
+    def __init__(self, rangeval=[0, 1], **kwargs):
+        """
+        :param rangeval: Array of length 2 containing the lower and upper boundaries for the rangeval of argument values.
+            If a single value is input, it must be positive and the lower limit is set to 0.
+        :param kwargs: Other arguments to be passed to basis.__init__()
+
+        :return: Object of class constant_basis()
+        """
+
+        super().__init__(basistype='constant', nbasis = 1, **kwargs)
+
+        # check RANGEVAL
+        if type(rangeval) == int:
+            if rangeval <= 0:
+                raise ValueError("RANGEVAL is a single value that is not positive.")
+            rangeval = [0, rangeval]
+        elif len(rangeval) == 2:
+            if rangeval[1] <= rangeval[0]:
+                raise ValueError("RANGEVAL is not a legitimate range.")
+        else:
+            raise ValueError("RANGEVAL is not a legitimate range.")
+
+        # convert to column array
+        rangeval = check_array(rangeval)
+
+
+
