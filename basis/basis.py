@@ -283,7 +283,7 @@ class bspline_basis(basis):
 
     def eval(self, evalargs, nderiv=0, sparsewrd=0):
 
-
+        """ test """
 
     def plot(self, nx=None):
         """

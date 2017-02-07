@@ -41,7 +41,7 @@ class Lfd(object):
     an argument of Lfd().
     """
 
-    def __init__(self, nderiv, bwtcell):
+    def __init__(self, nderiv=0, bwtcell=None):
         """
 
         :param nderiv: The highest order of the derivative in operator L.
@@ -50,6 +50,21 @@ class Lfd(object):
             otherwise, cell NEDRIV+1 contains a function that is exponentiated to define the actual coefficient.
         """
 
-        # check nderiv
+        # check NDERIV
 
-        if
+        if not isinstance(nderiv, int):
+            raise ValueError("Order of operator is not an integer.")
+
+        if nderiv < 0:
+            raise ValueError("Order of operator is negative.")
+
+        # check BWTCELL
+
+        if not isinstance(bwtcell, list):
+            raise ValueError("BWTCELL is not a list object.")
+
+        if bwtcell is None:
+            if nderiv > 0:
+                raise ValueError("Positive operator order is accompanied by empty BWTCELL.")
+        else:
+

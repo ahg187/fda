@@ -47,4 +47,53 @@ class fd(object):
             self.basisobj = constant_basis(rangeval=[0,1])
             self.fdnames = defaultfdnames
 
+        # set default arguments
+
+        if fdnames is None:
+            fdnames = defaultfdnames
+
+        # check COEF
+
+        if not isinstance(coef, np.ndarray):
+            raise ValueError("Coefficients are not stored as an array.")
+
+        if coef is None or coef.size = 0:
+            raise ValueError("Coefficient array is empty.")
+        else:
+            coefd = coef.shape
+            ndim = length(coefd)
+            if ndim > 3:
+                raise ValueError("Coefficient array has more than three dimensions.")
+
+        # check BASISOBJ
+
+        if not isinstance(basisobj, basis):
+            raise ValueError("BASISOBJ is not of class basis.")
+
+        nbasis = basisobj.nbasis
+
+        if coefd[0] != nbasis:
+            raise ValueError("First dimension of coefficient array is not equal to number of basis functions.")
+
+        # check FDNAMES
+
+        if not isinstance(fdnames, list):
+            raise ValueError("FDNAMES is not a list object.")
+
+        if len(fdnames) > 3:
+            raise ValueError("FDNAMES has length greater 3.")
+
+        # fill missing fdnames elements with default labels
+
+        if len(fdnames) == 2:
+            fdnames.append('functions')
+        if len(fdnames) == 1:
+            fdnames.append('replications')
+            fdnames.append('functions')
+
+        self.coef = coef
+        self.basisobj = basisobj
+        self.fdnames = fdnames
+
+
 
